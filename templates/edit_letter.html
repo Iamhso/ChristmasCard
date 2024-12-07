@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>편지 수정</h1>
+<form method="POST" enctype="multipart/form-data">
+    <div>
+        <label for="name">이름:</label>
+        <input type="text" id="name" name="name" value="{{ letter.name }}" required>
+    </div>
+    <div>
+        <label for="content">내용:</label>
+        <textarea id="content" name="content" required>{{ letter.content }}</textarea>
+    </div>
+    <div>
+        <label for="image">이미지 첨부:</label>
+        <input type="file" id="image" name="image" accept="image/*">
+    </div>
+    <button type="submit">수정하기</button>
+</form>
+
+{% endblock %}

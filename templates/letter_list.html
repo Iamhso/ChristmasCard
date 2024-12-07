@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block nav %}
+<nav>
+    <a href="{{ url_for('write_letter') }}">편지 쓰기</a>
+</nav>
+{% endblock %}
+
+{% block content %}
+<h1 style="color: red;">🎄 크리스마스 편지 목록 🎄</h1>
+{% for letter in letters %}
+    <div class="letter-button" onclick="toggleLetter({{ letter.id }})" style="background-color: #f8d7da; border: 2px solid #f5c6cb;">
+        <strong style="color: black;">{{ letter.name }}</strong> - {{ letter.date.strftime('%Y-%m-%d %H:%M:%S') }}
+        {% if letter.image %}
+            <img src="{{ url_for('static', filename='uploads/' + letter.image) }}" alt="첨부 이미지" style="max-width: 300px; border-radius: 10px; border: 2px solid #155724;">
+        {% else %}
+            <p>첨부된 이미지가 없습니다.</p>
+        {% endif %}
+        <form action="{{ url_for('delete_letter', letter_id=letter.id) }}" method="POST" style="display:inline;">
+            <button type="submit" onclick="return confirm('本当にこの편지를 삭제하시겠습니까？');">삭제</button>
+        </form>
+        <a href="{{ url_for('edit_letter', letter_id=letter.id) }}">편집</a>
+    </div>
+    <div id="letter-content-{{ letter.id }}" class="letter-content" style="display: none;">
+        <p style="color: black;">{{ letter.content }}</p>
+    </div>
+    <hr>
+{% endfor %}
+
+<script>
+function toggleLetter(id) {
+    var content = document.getElementById('letter-content-' + id);
+    if (content.style.display === 'none') {
+        content.style.display = 'block';
+    } else {
+        content.style.display = 'none';
+    }
+}
+</script>
+
+<style>
+.letter-button { background-color: rgba(255, 255, 255, 0.8); }
+.letter-content {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+.letter-content img {
+    margin: 10px auto;
+    display: block;
+}
+</style>
+
+{% endblock %}

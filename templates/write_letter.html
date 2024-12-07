@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block nav %}
+<nav>
+    <a href="{{ url_for('letter_list') }}">편지 목록</a>
+</nav>
+{% endblock %}
+
+{% block content %}
+<h1 style="color: red;">🎅 크리스마스 편지 쓰기 🎅</h1>
+<form method="POST" enctype="multipart/form-data">
+    <div>
+        <label for="name">이름:</label>
+        <input type="text" id="name" name="name" required>
+    </div>
+    <div>
+        <label for="content">내용:</label>
+        <textarea id="content" name="content" required></textarea>
+    </div>
+    <div>
+        <label for="image">이미지 첨부:</label>
+        <input type="file" id="image" name="image" accept="image/*">
+    </div>
+    <button type="submit">편지 보내기</button>
+</form>
+{% endblock %}

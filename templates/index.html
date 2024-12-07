@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block nav %}
+<nav>
+    <a href="{{ url_for('letter_list') }}">편지 목록</a>
+    <a href="{{ url_for('write_letter') }}">편지 쓰기</a>
+</nav>
+{% endblock %}
+
+{% block content %}
+<h1 style="color: red;">🎄 크리스마스 편지함 🎄</h1>
+<p>여기서 편지를 작성하고, 목록을 볼 수 있습니다.</p>
+<div style="display: flex; justify-content: center; margin-top: 50px;">
+    <a href="{{ url_for('letter_list') }}" class="button" style="margin-right: 20px;">편지 목록</a>
+    <a href="{{ url_for('write_letter') }}" class="button">편지 쓰기</a>
+</div>
+
+<style>
+.button {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}
+</style>
+{% endblock %}
