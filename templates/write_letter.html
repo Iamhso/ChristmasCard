@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 
 {% block nav %}
-<nav>
-    <a href="{{ url_for('letter_list') }}">편지 목록</a>
-</nav>
+<div style="display: flex; justify-content: center; margin-top: 20px;">
+    <a href="{{ url_for('letter_list') }}" class="button">편지 목록</a>
+</div>
 {% endblock %}
 
 {% block content %}
@@ -11,11 +11,15 @@
 <form method="POST" enctype="multipart/form-data">
     <div>
         <label for="name">이름:</label>
-        <input type="text" id="name" name="name" required>
+        <input type="text" id="name" name="name" required style="border: 2px solid red; margin-bottom: 20px;">
     </div>
     <div>
         <label for="content">내용:</label>
-        <textarea id="content" name="content" required></textarea>
+        <textarea id="content" name="content" rows="10" cols="50" required style="border: 2px solid red; resize: vertical;"></textarea>
+    </div>
+    <div>
+        <label for="password">비밀번호:</label> <!-- 비밀번호 입력 필드 추가 -->
+        <input type="password" id="password" name="password" required style="border: 2px solid red; margin-bottom: 20px;">
     </div>
     <div>
         <label for="image">이미지 첨부:</label>

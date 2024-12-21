@@ -12,6 +12,7 @@
             padding: 20px;
             background-color: #ADD8E6; /* Light Blue */
             color: black;
+            overflow: hidden; /* Prevent scrollbars from appearing */
         }
         nav {
             margin-bottom: 20px;
@@ -36,6 +37,23 @@
             background-color: #d4edda;
             color: #155724;
         }
+
+        /* Snowflake animation */
+        .snowflake {
+            position: absolute;
+            top: -10%;
+            color: #ffffff; /* Snowflake color */
+            font-size: 1em; /* Default size */
+            pointer-events: none; /* Prevent mouse events */
+            animation: fall linear forwards; /* Animation */
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh); /* Move down to the bottom of the viewport */
+                opacity: 0; /* Fade out */
+            }
+        }
     </style>
 </head>
 <body>
@@ -48,5 +66,34 @@
         {% endif %}
     {% endwith %}
     {% block content %}{% endblock %}
+
+    <script>
+        // Function to create snowflakes
+        function createSnowflake() {
+            const snowflake = document.createElement('div');
+            snowflake.className = 'snowflake';
+            snowflake.innerHTML = '❄'; // Snowflake character
+
+            // Randomize size and position
+            const size = Math.random() * (2 - 0.5) + 0.5; // Size between 0.5em and 2em
+            snowflake.style.fontSize = `${size}em`;
+            snowflake.style.left = `${Math.random() * 100}vw`; // Random horizontal position
+
+            // Append to body
+            document.body.appendChild(snowflake);
+
+            // Set animation duration
+            const duration = Math.random() * (5 - 3) + 3; // Duration between 3s and 5s
+            snowflake.style.animationDuration = `${duration}s`;
+
+            // Remove snowflake after animation ends
+            snowflake.addEventListener('animationend', () => {
+                snowflake.remove();
+            });
+        }
+
+        // Create snowflakes at intervals
+        setInterval(createSnowflake, 300); // Create a new snowflake every 300ms
+    </script>
 </body>
 </html>

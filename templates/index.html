@@ -1,32 +1,92 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>크리스마스 편지함</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh; /* 화면 전체 높이 */
+            margin: 0;
+            background-color: #ADD8E6; /* 배경색을 흰색으로 설정 */
+            overflow: hidden; /* 눈송이가 화면을 넘어가지 않도록 설정 */
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #007BFF; /* 버튼 배경색 */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+        .button:hover {
+            background-color: #0056b3; /* 버튼 호버 색상 */
+        }
+        
+        /* 눈송이 스타일 */
+        .snowflake {
+            position: absolute;
+            top: -10px; /* 화면 위에서 시작 */
+            color: white; /* 눈송이 색상 */
+            font-size: 1em; /* 크기 조절 */
+            pointer-events: none; /* 클릭 이벤트 방지 */
+        }
+    </style>
+</head>
+<body>
+    <h1 style="color: red;">🎄 크리스마스 편지함 🎄</h1>
+    
+    <div class="button-container">
+        <a href="{{ url_for('letter_list') }}" class="button">편지 목록</a>
+        <a href="{{ url_for('write_letter') }}" class="button">편지 쓰기</a>
+    </div>
 
-{% block nav %}
-<nav>
-    <a href="{{ url_for('letter_list') }}">편지 목록</a>
-    <a href="{{ url_for('write_letter') }}">편지 쓰기</a>
-</nav>
-{% endblock %}
+    <footer>
+        <p>&copy; 2023 크리스마스 편지함. All rights reserved.</p>
+    </footer>
 
-{% block content %}
-<h1 style="color: red;">🎄 크리스마스 편지함 🎄</h1>
-<p>여기서 편지를 작성하고, 목록을 볼 수 있습니다.</p>
-<div style="display: flex; justify-content: center; margin-top: 50px;">
-    <a href="{{ url_for('letter_list') }}" class="button" style="margin-right: 20px;">편지 목록</a>
-    <a href="{{ url_for('write_letter') }}" class="button">편지 쓰기</a>
-</div>
+    <script>
+        // 눈송이 생성 함수
+        function createSnowflake() {
+            const snowflake = document.createElement('div');
+            snowflake.className = 'snowflake';
+            snowflake.innerHTML = '❄'; // 눈송이 모양
+            document.body.appendChild(snowflake);
 
-<style>
-.button {
-    background-color: #007BFF;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
+            // 랜덤 위치와 애니메이션 설정
+            const xPos = Math.random() * window.innerWidth;
+            const duration = Math.random() * 3 + 2; // 2초에서 5초 사이의 랜덤 시간
+            snowflake.style.left = xPos + 'px';
+            
+            // 애니메이션 효과
+            snowflake.animate([
+                { transform: 'translateY(0)' },
+                { transform: 'translateY(' + (window.innerHeight + 50) + 'px)' }
+            ], {
+                duration: duration * 1000,
+                easing: 'linear',
+                fill: 'forwards'
+            });
 
-.button:hover {
-    background-color: #0056b3;
-}
-</style>
-{% endblock %}
+            // 눈송이 제거
+            setTimeout(() => {
+                snowflake.remove();
+            }, duration * 1000);
+        }
+
+        // 일정 간격으로 눈송이 생성
+        setInterval(createSnowflake, 300); // 300ms마다 새로운 눈송이 생성
+    </script>
+</body>
+</html>

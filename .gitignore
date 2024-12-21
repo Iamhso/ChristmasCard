@@ -3,7 +3,7 @@ __pycache__/
 instance/
 .webassets-cache
 .env
-venv/
+hsvenv/
 *.db
 static/uploads/*
 !static/uploads/.gitkeep

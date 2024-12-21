@@ -9,20 +9,17 @@
 {% block content %}
 <h1 style="color: red;">🎄 크리스마스 편지 목록 🎄</h1>
 {% for letter in letters %}
-    <div class="letter-button" onclick="toggleLetter({{ letter.id }})" style="background-color: #f8d7da; border: 2px solid #f5c6cb;">
+    <div class="letter-button" onclick="toggleLetter('{{ letter.id }}')" style="background-color: #f8d7da; border: 2px solid #f5c6cb;">
         <strong style="color: black;">{{ letter.name }}</strong> - {{ letter.date.strftime('%Y-%m-%d %H:%M:%S') }}
-        {% if letter.image %}
-            <img src="{{ url_for('static', filename='uploads/' + letter.image) }}" alt="첨부 이미지" style="max-width: 300px; border-radius: 10px; border: 2px solid #155724;">
-        {% else %}
-            <p>첨부된 이미지가 없습니다.</p>
-        {% endif %}
-        <form action="{{ url_for('delete_letter', letter_id=letter.id) }}" method="POST" style="display:inline;">
-            <button type="submit" onclick="return confirm('本当にこの편지를 삭제하시겠습니까？');">삭제</button>
-        </form>
+        
+        <button onclick="showDeletePrompt('{{ letter.id }}')">삭제</button>
         <a href="{{ url_for('edit_letter', letter_id=letter.id) }}">편집</a>
     </div>
     <div id="letter-content-{{ letter.id }}" class="letter-content" style="display: none;">
         <p style="color: black;">{{ letter.content }}</p>
+        {% if letter.image %}
+            <img src="{{ url_for('static', filename='uploads/' + letter.image) }}" alt="첨부 이미지" width="200px" style="display: none;">
+        {% endif %}
     </div>
     <hr>
 {% endfor %}
@@ -30,10 +27,39 @@
 <script>
 function toggleLetter(id) {
     var content = document.getElementById('letter-content-' + id);
+    var image = content.querySelector('img');
     if (content.style.display === 'none') {
         content.style.display = 'block';
+        if (image) {
+            image.style.display = 'block';
+        }
     } else {
         content.style.display = 'none';
+        if (image) {
+            image.style.display = 'none';
+        }
+    }
+}
+
+function showDeletePrompt(letterId) {
+    var password = prompt("편지를 삭제하려면 비밀번호를 입력하세요:");
+    if (password) {
+        var form = document.createElement('form');
+        form.method = 'POST';
+        // letterId = parseInt(letterId);
+        baseUrl = "{{ url_for('delete_letter', letter_id=0) }}";
+
+        var finalUrl = baseUrl.replace('0', letterId);
+        form.action = finalUrl;
+        
+        var passwordInput = document.createElement('input');
+        passwordInput.type = 'hidden';
+        passwordInput.name = 'password';
+        passwordInput.value = password;
+        
+        form.appendChild(passwordInput);
+        document.body.appendChild(form);
+        form.submit();
     }
 }
 </script>
@@ -44,11 +70,6 @@ function toggleLetter(id) {
     background-color: rgba(255, 255, 255, 0.8);
     padding: 10px;
     border-radius: 10px;
-    margin-top: 10px;
-}
-.letter-content img {
-    margin: 10px auto;
-    display: block;
 }
 </style>
 
